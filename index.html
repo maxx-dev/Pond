@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>Water Pond for Dashboard</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="styles.css">
+	</head>
+	
+	<body>
+
+    <canvas id="canvas_pad"></canvas>
+    <canvas id="LayerCanvas"></canvas> <!--DETAIL LAYER CIRCLE !-->
+    <div id="SearchInput">
+
+        <input type="text">
+        <img src="textures/Search_Icon.png">
+        
+    </div>
+
+    <div id="DetailLayer">
+
+        <div class="Hide">x</div>
+        <div id="barchart"></div>
+        <div id="livechart"></div>
+
+    </div>
+
+    <canvas id="FishCanvas" data-processing-sources="Fishes/pond.pjs Fishes/Fish.pjs Fishes/Boid.pjs Fishes/Flagellum.pjs Fishes/Food.pjs" resize></canvas>
+
+
+    </body>
+	
+	<footer>
+
+		<script type="text/javascript" src="libraries/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="libraries/Box2dWeb-2.1.a.3.js"></script>
+
+        <script type="text/javascript" src="libraries/three60.js"></script>
+        <script type="text/javascript" src="libraries/Water.js"></script>
+
+		<script type="text/javascript" src="libraries/Stats.js"></script>
+        <script type="text/javascript" src="libraries/dat.gui.js"></script>
+		<script type="text/javascript" src="libraries/Detector.js"></script>
+
+        <script type="text/javascript" src="libraries/Event.min.js"></script>
+
+        <script type="text/javascript" src="libraries/processing.js"></script>
+        <script type="text/javascript" src="libraries/paper.js"></script>
+
+        <script type="text/javascript" src="Fireflies/Fireflies.js"></script>
+
+        <script type="text/javascript" src="Soraboard.js"></script>
+        <script type="text/javascript" src="Soracontent.js"></script>
+
+        <script src="libraries/highcharts.js"></script>
+        <script src="Charts.js"></script>
+
+
+	</footer>
+</html>

@@ -1,0 +1,60 @@
+<html>
+<head>
+    <title></title>
+    <style>canvas {position:absolute; z-index:1; width: 100%; height: 100% }
+
+    img {position:absolute; z-index:0; top:0px; left: 0px;}
+
+
+    </style>
+</head>
+<body>
+<script src="../libraries/three60.js"></script>
+<script src="Fireflies2.js"></script>
+<img src="../textures/background.jpg">
+
+
+
+<script>
+    clock = new THREE.Clock();
+
+    scene2 = new THREE.Scene;
+
+    camera2 = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -1E4, 1E4);
+    scene2.add(camera2);
+    renderer2 = new THREE.WebGLRenderer({});
+    renderer2.shadowMapEnabled = true;
+    renderer2.shadowMapSoft = true;
+    renderer2.setClearColor(0);
+    renderer2.setSize(window.innerWidth, window.innerHeight);
+    renderer2.domElement.width = window.innerWidth;
+    renderer2.domElement.height =window.innerHeight;
+    renderer2.autoClear = !1;
+    container2 = document.createElement( 'div' );
+    container2.id = "WebGL_TOP";
+    document.body.appendChild( container2 );
+    container2.appendChild(renderer2.domElement);
+
+    var geometry = new THREE.CubeGeometry(1,1,1);
+    var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+    var cube = new THREE.Mesh(geometry, material);
+    scene2.add(cube);
+
+    init_FireFlies();
+    camera2.position.z = 300;
+
+    var render = function () {
+        requestAnimationFrame(render);
+
+        Animate_FireFlies ();
+
+        renderer2.render(scene2, camera2);
+    };
+
+    render();
+</script>
+
+
+
+</body>
+</html>

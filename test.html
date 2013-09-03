@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <script src="libraries/jquery-2.0.3.js"></script>
+
+</head>
+
+<body>
+
+<canvas id="myCanvas" width="1920" height="1080" style="border:1px solid #d3d3d3; position:absolute; top:0px; left:0px; z-index:1;"></canvas>
+<img style="position:absolute; top:0px; left:0px; z-index:0" src="textures/background3.jpg">
+<img style="display:none" id="scream" src="img_the_scream.jpg" alt="The Scream" width="220" height="277">
+<script>
+
+    // Converts from degrees to radians.
+    Math.radians = function(degrees) {
+        return degrees * Math.PI / 180;
+    };
+
+    // Converts from radians to degrees.
+    Math.degrees = function(radians) {
+        return radians * 180 / Math.PI;
+    };
+
+
+    var centerX  = window.innerWidth/2-30;
+    var centerY = window.innerHeight/2;
+    var Radius = 300;
+    var Steps = 6;
+    var Inc  = 360/Steps;
+
+    var c=document.getElementById("myCanvas");
+    var ctx=c.getContext("2d");
+
+
+    //ctx.clearRect(0, 0, c.width, c.height);
+    ctx.beginPath();
+    ctx.fillStyle = "rgba(9, 137, 4,1)";
+    ctx.arc(centerX,centerY,30, 0, 2 * Math.PI, false);
+
+    //ctx.arc(centerX-Radius,centerY,30, 0, 2 * Math.PI, false);
+
+    for (var k =0;k<Steps;k++)
+    {
+        ctx.arc(centerX-(Math.cos(Math.radians(k*Inc))*Radius),centerY+(Math.sin(Math.radians(k*Inc))*Radius),30, 0, 2 * Math.PI, false);
+        ctx.fill();
+    }
+
+    ctx.closePath();
+
+
+
+
+        //CreateLayer(950,500,550,800,250,120);
+
+
+
+</script>
+
+</body>
+</html>

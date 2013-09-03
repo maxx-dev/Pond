@@ -1,0 +1,124 @@
+<html>
+<head>
+    <title>My first Three.js app</title>
+    <style>canvas { width: 100%; height: 100% }</style>
+</head>
+<body>
+<script src="libraries/three.min60.js"></script>
+<script>
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    var geometry = new THREE.CubeGeometry(1,1,1);
+    var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    camera.position.z = 5;
+
+    var render = function () {
+        requestAnimationFrame(render);
+
+        //cube.rotation.x += 0.1;
+
+        //cube.rotation.y += 0.1;
+
+        renderer.render(scene, camera);
+    };
+
+    render();
+
+
+
+
+    // The Nature of Code
+    // Daniel Shiffman
+    // http://natureofcode.com
+
+    // Seek_Arrive
+
+    // The "Vehicle" class
+
+    function Vehicle (x,y) {
+
+        var location;
+        var velocity;
+        var acceleration;
+        var r;
+        var maxforce;    // Maximum steering force
+        var maxspeed;    // Maximum speed
+
+
+        acceleration = new THREE.Vector(0,0);
+        velocity = new THREE.Vector(0,-2);
+        location = new THREE.Vector(x,y);
+        r = 6;
+        maxspeed = 4;
+        maxforce = 0.1;
+
+
+        // Method to update location
+        this.update = function() {
+            // Update velocity
+            velocity.add(acceleration);
+            // Limit speed
+
+            //velocity.limit(maxspeed);
+            location.add(velocity);
+            // Reset accelerationelertion to 0 each cycle
+            acceleration.mult(0);
+        }
+
+        this.applyForce = function (force) {
+            // We could add mass here if we want A = F / M
+            acceleration.add(force);
+        }
+
+        // A method that calculates a steering force towards a target
+        // STEER = DESIRED MINUS VELOCITY
+        this.seek = function (target) {
+
+            var desired = new THREE.Vector();
+
+            desired.subVectors(target,location);  // A vector pointing from the location to the target
+
+            // Scale to maximum speed
+            desired.setMag(maxspeed);
+
+            // Steering = Desired minus velocity
+            var steer = new THREE.Vector();
+
+            steer.sub(desired,velocity);
+            //steer.limit(maxforce);  // Limit to maximum steering force
+
+            this.applyForce(steer);
+        }
+
+        void display() {
+            // Draw a triangle rotated in the direction of velocity
+            float theta = velocity.heading2D() + PI/2;
+            fill(127);
+            stroke(0);
+            strokeWeight(1);
+            pushMatrix();
+            translate(location.x,location.y);
+            rotate(theta);
+            beginShape();
+            vertex(0, -r*2);
+            vertex(-r, r*2);
+            vertex(r, r*2);
+            endShape(CLOSE);
+            popMatrix();
+
+
+        }
+    }
+
+
+</script>
+</body>
+</html>

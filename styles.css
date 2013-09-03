@@ -1,0 +1,43 @@
+
+html, body {
+    position:absolute;
+    left:0px;
+    top:0px;
+    margin: 0px;
+    overflow: hidden;
+	background-color:rgba(255,255,255,0);
+    /* DO NEVER REMOVE THIS OR EVENT.JS WILL STOP WORKING*/
+    height:100%;
+    width: 100%;
+    /* DO NEVER REMOVE THIS OR EVENT.JS WILL STOP WORKING*/
+
+    font-family:OswaldRegular;
+
+}
+
+@font-face {font-family: RobotoLight; src: url('libraries/Fonts/RobotoLight.ttf');}
+@font-face {font-family: OswaldRegular; src: url('libraries/Fonts/Oswald-Regular.otf');}
+
+#WebGL canvas {}
+#WebGL_TOP canvas {position:absolute; top:0px; left:0px; z-index:1}
+
+
+
+#FishCanvas {position:absolute; z-index:0; opacity:0.9; display:block}
+#canvas_pad {position:absolute; z-index:3; display:block}
+#LayerCanvas {position:absolute; top:0px; left:0px; z-index:12; display:none}
+
+#DetailLayer {position: absolute;background-color: rgba(9, 137, 4, 0.53);display:none; z-index:13;}
+#DetailLayer #livechart {position:absolute; left:50%; top:200px; width: 500px; height: 300px; margin: 0 auto; margin-left:-250px;}
+#DetailLayer #barchart {position:absolute; left:50%; top:520px;  width: 500px; height: 300px; margin: 0 auto; margin-left:-250px;}
+#DetailLayer .Hide { display:none; position:absolute; left:85%; top:56px; margin-left:-40px; width:25px; height:25px; border-radius:25px; background-color:#000000; color:white; line-height:23px; text-align:center; font-family:Roboto; cursor:pointer}
+
+#SearchInput {position:absolute;left:50%;top:50%; width:400px;height:70px;margin-left:-200px; margin-top:-70px; display:none; z-index:4;}
+#SearchInput input {position:absolute;left:65px;top:0px;width:300px;height:55px; background-color:transparent; border:0px; border-bottom:4px white solid; color:white; font-size:27px; font-family:OswaldRegular}
+#SearchInput img {position:absolute; left:0px; top:15px; width:50px;}
+#SearchInput input:focus{ outline: 0;}
+
+.SearchResult {position:absolute;background-color: rgba(171, 95, 31, 0.6); z-index:11; width:350px; height:250px; color:white; font-size:16px; }
+.SearchResult div {position:absolute; margin:20px; width:310px; height:250px;}
+.SearchResult div h2 {text-align:center}
+.SearchResult_Displayer {position:absolute; width:130px; height:130px; border-radius:120px; z-index:12;}

@@ -1,0 +1,257 @@
+int numBoids 		= 10;
+boolean mouse_Pressed    = false;
+
+ArrayList boids 	= new ArrayList();
+ArrayList foods 	= new ArrayList();
+
+int[] pinkColors 	= new int();
+int[] blueColors 	= new int();
+
+
+
+var touches;
+
+
+Math.radians = function(degrees) {
+    return degrees * Math.PI / 180;
+};
+
+
+Math.degrees = function(radians) {
+    return radians * 180 / Math.PI;
+};
+
+
+void setup() {
+    size( window.innerWidth, window.innerHeight );
+
+    //frameRate( 30 );
+
+
+
+    blackColors = [#000000, #0012d6, #0012d6];
+    pinkColors = [#162322, #624d3c, #cd864c];
+    blueColors = [#162322, #244814, #499027];
+
+
+    // Create fishes
+    for ( int n = 0; n < numBoids; n++ ) {
+        PVector location = new PVector( random( 100, width - 100 ), random( 100, height - 100 ) );
+        var maxSpeed = random( 1.0, 2.5 );
+
+        var bodySizeW =  random( 100, 200 );
+        var bodySizeH = bodySizeW * 0.3 + random( 5 );
+
+        if (n <= 2)
+        {
+            Fish fish = new Fish( blueColors, location, maxSpeed, 0.2, bodySizeW, bodySizeH );
+            //Fish fish_shadow = new Fish( ShadowColors, location, maxSpeed, 0.2, bodySizeW, bodySizeH );
+        }
+        else if ( n >= 3 &&  n<= 12 ) {
+            Fish fish = new Fish( pinkColors, location, maxSpeed, 0.2, bodySizeW, bodySizeH );
+            //Fish fish_shadow = new Fish( ShadowColors, location, maxSpeed, 0.2,bodySizeW, bodySizeH);
+        }
+        else {
+            //Fish fish = new Fish( blueColors, location, maxSpeed, 0.2, bodySizeW, bodySizeH );
+            //Fish fish_shadow = new Fish( ShadowColors, location, maxSpeed, 0.2 ,bodySizeW, bodySizeH);
+        }
+        boids.add( fish );
+        //boids.add( fish_shadow );
+    }
+}
+
+
+void draw() {
+    background( 105, 210, 231, 0 );
+
+
+    // Fish
+    //for ( int i = boids.size() - 1; i >= 0; i-- ) {
+    for ( int i = 0; i < boids.size(); i++ ) {
+        Fish fish = (Fish)boids.get( i );
+        fish.update();
+        fish.render();
+
+        // If there is any food in the pond
+        if ( foods.size() > 0 ) {
+            // Check if a fish is near one and apply arrive void behaviour
+            //for ( int j = foods.size() - 1; j >= 0; j-- ) {
+            for ( int j = 0; j < foods.size(); j++ ) {
+                Food food 		= (Food)foods.get( j );
+                PVector fLoc 	= food.location.get();
+                PVector bLoc 	= fish.location.get();
+                float d 		= bLoc.dist( fLoc );
+                if ( d < 80.0 ) {
+                    fish.arrive( fLoc );
+                    if ( fish.hasArrive === true ) {
+                        food.isDead = true;
+                        fish.hasArrive = false;
+                    }
+                }
+            }
+        }
+    }
+
+    // Food
+
+    for ( int f = foods.size() - 1; f >= 0; f-- ) {
+        Food food = (Food)foods.get( f );
+        food.update();
+        food.render();
+        if ( food.isDead ) {
+            foods.remove( f );
+        }
+    }
+
+    //SHADOW
+/*
+    for (var k=0;k<numBoids;k+=2)
+    {
+        boids.get(k+1).location.x = boids.get(k).location.x;
+        boids.get(k+1).location.y = boids.get(k).location.y;
+    }
+*/
+
+    // SCARE AWAY
+    for (var k=0;k<numBoids;k++)
+    {
+    if (boids.get(k).OldMaxSpeed > 8)
+    {
+        //console.log('POWER TEASING');
+        boids.get(k).OldMaxSpeed = 2; //SPEED REG ON POWER TEASING
+    }
+    if (boids.get(k).maxSpeed > boids.get(k).OldMaxSpeed)
+    {
+        boids.get(k).maxSpeed -=  0.07;
+    }
+    }
+
+
+    // SWIM TO
+    if (Search == true)
+    {
+     SwimTo(SearchResults);
+    }
+
+}
+
+
+void mouseDragged() {
+    // Add food
+
+   /* if ( millis() % 10 == 0 ) {
+        foods.add( new Food( new PVector( mouseX, mouseY ) ) );
+    }*/
+
+}
+
+// SCARE AWAY
+void mousePressed(MouseX,MouseY) {
+
+    mouse_Pressed = true;
+    MouseX_Fish = MouseX;
+    MouseY_Fish = MouseY
+
+
+
+    //foods.add( new Food( new PVector( MouseX_Fish, MouseY_Fish ) ) );
+
+
+    for (var k=0;k<numBoids;k++)
+    {
+    if (boids.get(k).location.x < MouseX_Fish+200  && boids.get(k).location.x > MouseX_Fish-200 && boids.get(k).location.y < MouseY_Fish+200  && boids.get(k).location.y > MouseY_Fish-200)
+    {
+        //console.log('RANGE');
+        boids.get(k).OldMaxSpeed = boids.get(k).maxSpeed;
+        boids.get(k).maxSpeed += 5;
+        boids.get(k).velocity = new PVector (boids.get(k).velocity.x + (random()*3+2),boids.get(k).velocity.y + (random()*3+2))
+        //console.log(boids.get(k).OldMaxSpeed);
+    }
+    else
+    {
+        // OUT OF RANGE
+    }
+    }
+
+}
+
+void SwimToRelease ()
+{
+    for (var k =0;k<numBoids;k++)
+    {
+        boids.get(k).arrived = false;
+        boids.get(k).maxForce = 0.2;
+    }
+
+}
+
+
+
+function SwimTo (SearchResults)
+{
+    //console.log('SWIMTO');
+
+    var centerX  = window.innerWidth/2-30;
+    var centerY = window.innerHeight/2;
+    var Radius = 300;
+    var Steps = SearchResults;
+    var Inc  = 360/Steps;
+
+    for (var k =0;k<Steps;k++)
+    {
+        var AimX = centerX-(Math.cos(Math.radians(k*Inc))*Radius)+ boids.get(k).deflection;
+        var AimY = centerY+(Math.sin(Math.radians(k*Inc))*Radius)+ boids.get(k).deflection;
+
+        if (boids.get(k).arrived != true)
+        {
+            boids.get(k).maxSpeed = 10;
+            boids.get(k).maxForce = 1.2;
+            boids.get(k).arrive(new PVector(AimX,AimY));
+
+            if (boids.get(k).location.x > AimX-20  && boids.get(k).location.x < AimX+20 && boids.get(k).location.y > AimY-20  && boids.get(k).location.y < AimY+20)
+            {
+                boids.get(k).arrived = true;
+                boids.get(k).maxSpeed = 2;
+                boids.get(k).maxForce = 0;
+                FishArrived(boids.get(k));
+                console.log(boids.get(k));
+
+            }
+         }
+
+        if (boids.get(k).arrived == true)
+        {
+            boids.get(k).location.x = AimX;
+            boids.get(k).location.y = AimY;
+
+            boids.get(k).velocity = new PVector (boids.get(k).velocity.x+Math.cos(Math.radians(k*Inc)),boids.get(k).velocity.y-Math.sin(Math.radians(k*Inc))) // TO ROTATE THE FISHES
+
+        }
+    }
+
+    for (var k =Steps;k<numBoids;k++)
+    {
+        if (boids.get(k).location.x < window.innerWidth/2)
+        {
+            boids.get(k).arrive(new PVector(-200,boids.get(k).location.y));
+        }
+        else
+        {
+            boids.get(k).arrive(new PVector(window.innerWidth+200,boids.get(k).location.y));
+        }
+    }
+}
+
+
+function touchMove( evt ) {
+    // Add food
+    evt.touches;
+    /*
+    if ( millis() % 10 == 0 ) {
+        foods.add( new Food( new PVector( touches[0].pageX, touches[0].pageY ) ) );
+    }*/
+}
+
+function touchEnd( evt ) {
+    touches = undefined;
+}
